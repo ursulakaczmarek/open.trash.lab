@@ -50,7 +50,7 @@
 				<i class="fa fa-trash fa-fw"></i>
 				<h3>why study labels & retail behavior?</h3>
 				<p class="fragment roll-in">yearly U.S. in-store losses of 16-43 billion pounds of food</p>
-				<p class="fragment roll-in">pull estimated $2300 worth of out-of-date goods daily</p>
+				<p class="fragment roll-in">each store pulls estimated $2300 worth of out-of-date goods daily</p>
 				<p class="fragment roll-in">almost all pulled goods still consumable with limited shelf life</p>
 				<br></br>
 				<p class="fragment roll-in">
@@ -70,10 +70,10 @@
 			<section class="inverse">
 				<img src="assets/logo.png">
 				<p class="fragment roll-in"><i class="fa fa-users fa-fw"></i>citizen science</p>
-				<p class="fragment roll-in"><i class="fa fa-trash fa-fw"></i>research</p>
 				<p class="fragment roll-in"><i class="fa fa-database fa-fw"></i>data<br></br>
 					<like-pre>var trash_url = 'http://www.opentrashlab.com/api/landfills';</like-pre>
 				</p>
+				<p class="fragment roll-in"><i class="fa fa-trash fa-fw"></i>research</p>
 			</section>
 
 			<section>
@@ -88,20 +88,6 @@
 				<i class="fa fa-images fa-fw"></i>
 				<h2>data</h2>
 				<p><img src="assets/IMG_1932.JPG" align="left" hspace="20"><img src="assets/IMG_1897.JPG" align="middle" hspace="20"><img src="assets/IMG_1923.JPG" align="right" hspace="20"></p>
-			</section>
-			<section>
-				<i class="fab fa-python" style="font-size:48px"></i>
-				<h2>data</h2>
-				<p><img src="assets/txt_rec.png">
-					<br></br>
-					<pre><code data-trim contenteditable>
-					# english language, LSTM neural net, single line of text Region of Interest
-
-	config = ("-l eng --oem 1 --psm 7")
-
-	text = pytesseract.image_to_string(roi, config=config)
-				</code></pre>
-				</p>
 			</section>
 			<section>
 				<i class="fa fa-database fa-fw"></i>
@@ -121,6 +107,20 @@
     "image_id" : "IMG_1995"
 })
 				</code></pre>
+			</section>
+			<section>
+				<i class="fab fa-python" style="font-size:48px"></i>
+				<h2>research</h2>
+				<p><img src="assets/txt_rec.png">
+					<br></br>
+					<pre><code data-trim contenteditable>
+					# english language, LSTM neural net, single line of text Region of Interest
+
+	config = ("-l eng --oem 1 --psm 7")
+
+	text = pytesseract.image_to_string(roi, config=config)
+				</code></pre>
+				</p>
 			</section>
 			<section>
 				<i class="fa fa-question fa-fw"></i>
