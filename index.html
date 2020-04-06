@@ -22,6 +22,7 @@
 
 	<!-- Icons -->
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
 	<!-- Printing and PDF exports -->
 	<script>
@@ -45,33 +46,63 @@
 				<p>Ursula Kaczmarek<br />Open Trash Lab</p>
 			</section>
 
+			<section>
+				<i class="fa fa-trash fa-fw"></i>
+				<h3>why study labels & retail behavior?</h3>
+				<p class="fragment roll-in">yearly U.S. in-store losses of 16-43 billion pounds of food</p>
+				<p class="fragment roll-in">pull estimated $2300 worth of out-of-date goods daily</p>
+				<p class="fragment roll-in">almost all pulled goods still consumable with limited shelf life</p>
+				<br></br>
+				<p class="fragment roll-in">
+					<font size="2pt">sources: Jonathan Bloom, <i>American Wasteland: How America Throws Away Nearly Half of Its Food</i>; Dana Gunders, National Resources Defense Council, <i> Wasted: How America Is Losing Up to 40 Percent of Its Food from Farm
+							to Fork to Landfill</i></font>
+				</p>
+			</section>
+
+			<section>
+				<i class="fa fa-trash fa-fw"></i>
+				<h3>why study labels & retail behavior?</h3>
+				<p class="fragment roll-in">understudied compared to waste at consumer level</p>
+				<p class="fragment roll-in">research mostly focused on supplier interface or barriers to donation</p>
+				<p class="fragment roll-in">waste occurs near end of supply chain</p>
+			</section>
+
 			<section class="inverse">
 				<img src="assets/logo.png">
 				<p class="fragment roll-in"><i class="fa fa-users fa-fw"></i>citizen science</p>
 				<p class="fragment roll-in"><i class="fa fa-trash fa-fw"></i>research</p>
-				<p class="fragment roll-in"><i class="fa fa-database fa-fw"></i>data<br></br><like-pre>var trash_url = 'http://www.opentrashlab.com/api/landfills';</like-pre></p>
-				<aside class="notes">
-					<p>environment to allow citizens to actively participate in understanding waste issues</p>
-					<p>fostering both public and private partnerships to provide a greater foundation of waste knowledge</p>
-					<p>facilitating and furthering research projects</p>
-					<p>hosting regular workshops and events</p>
-				</aside>
+				<p class="fragment roll-in"><i class="fa fa-database fa-fw"></i>data<br></br>
+					<like-pre>var trash_url = 'http://www.opentrashlab.com/api/landfills';</like-pre>
+				</p>
 			</section>
 
 			<section>
 				<i class="fa fa-users fa-fw"></i>
 				<h2>citizen scientists</h2>
-					<p class="fragment roll-in">experienced divers recruited from freegan.info</p>
-					<p class="fragment roll-in">receive training on principles of scientific research</p>
-					<p class="fragment roll-in">divert documented food from landfill</p>
+				<p class="fragment roll-in">experienced divers recruited from freegan.info</p>
+				<p class="fragment roll-in">receive training on principles of scientific research</p>
+				<p class="fragment roll-in">divert documented food from landfill</p>
 			</section>
 
 			<section>
-				<i class="fa fa-database fa-fw"></i>
+				<i class="fa fa-images fa-fw"></i>
 				<h2>data</h2>
 				<p><img src="assets/IMG_1932.JPG" align="left" hspace="20"><img src="assets/IMG_1897.JPG" align="middle" hspace="20"><img src="assets/IMG_1923.JPG" align="right" hspace="20"></p>
 			</section>
+			<section>
+				<i class="fab fa-python" style="font-size:48px"></i>
+				<h2>data</h2>
+				<p><img src="assets/txt_rec.png">
+					<br></br>
+					<pre><code data-trim contenteditable>
+					# english language, LSTM neural net, single line of text Region of Interest
 
+	config = ("-l eng --oem 1 --psm 7")
+
+	text = pytesseract.image_to_string(roi, config=config)
+				</code></pre>
+				</p>
+			</section>
 			<section>
 				<i class="fa fa-database fa-fw"></i>
 				<h2>data</h2>
@@ -91,7 +122,9 @@
 })
 				</code></pre>
 			</section>
-
+			<section>
+				<i class="fa fa-question fa-fw"></i>
+				<h1>questions</h1>
 		</div>
 
 	</div>
