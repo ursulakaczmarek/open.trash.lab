@@ -70,11 +70,11 @@
 
 <body>
   <h1>Manhattan's Coronavirus Trash Crash</h1>
-  <h2>DSNY's trash haul in April 2020 decreased an average of <span style="color: #cf7760;font-size:1.2em">6.72%</span>
-    across NYC community districts from the same time last year, while Manhattan community
+  <h2>DSNY's April 2020 trash haul outside Manhattan decreased an average of <span style="color: #cf7760;font-size:1.2em">3.12%</span>
+    from the same time last year, while Manhattan community
     districts averaged a <span style="color:#5d537c;font-size:1.2em">20.82%</span> decrease</h2>
   <div id="chart">
-    <svg width="1300" height="700"></svg>
+    <svg width="1300" height="680"></svg>
   </div>
   <script>
   var cd_url = 'https://raw.githubusercontent.com/ursulakaczmarek/open.trash.lab/master/dsny.tonnage/nyccd.geojson';
@@ -146,7 +146,7 @@
       //map parameters
       var projection = d3.geoMercator()
         .scale(Math.pow(2, 10.35 + 5.34))
-        .translate([1180 / 1.3, 835 / 1.2])
+        .translate([1180 / 1.3, 800 / 1.2])
         .center([-73.94, 40.50]);
 
       //cd outlines
