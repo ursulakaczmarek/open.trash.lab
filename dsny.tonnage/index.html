@@ -69,8 +69,10 @@
 </head>
 
 <body>
-  <h1>NYC's Coronavirus Trash Crash</h1>
-  <h2>DSNY's trash haul in April 2020 decreased an average of <span style="color: #cf7760;">6.72%</span> across NYC Community Districts from the same time the previous year</h2>
+  <h1>Manhattan's Coronavirus Trash Crash</h1>
+  <h2>DSNY's trash haul in April 2020 decreased an average of <span style="color: #cf7760;font-size:1.2em">6.72%</span>
+    across NYC community districts from the same time last year, while Manhattan community
+    districts averaged a <span style="color:#5d537c;font-size:1.2em">20.82%</span> decrease</h2>
   <div id="chart">
     <svg width="1300" height="700"></svg>
   </div>
@@ -189,7 +191,7 @@
       //map legend
       gMap.append("text")
         .attr("class", "label")
-        .attr("x", 850)
+        .attr("x", 855)
         .attr("y", 95)
         .text("% Decrease YoY April");
 
@@ -210,7 +212,7 @@
       gMap.append("rect")
         .attr("width", 170)
         .attr("height", 20)
-        .attr("x", 840)
+        .attr("x", 845)
         .attr("y", 100)
         .style("fill", "url(#linear-gradient)");
 
@@ -233,7 +235,7 @@
         //monthly % change from 4/2019 values
         var cdData = data.filter(d => d.boroCD == cd);
         var changeValues = cdData.filter(
-          d => !d.date.includes("Apr 01 2019") || !d.date.includes("May 01 2020") ).reduce (
+          d => !d.date.includes("Apr 01 2019") && !d.date.includes("May 01 2020") ).reduce (
             (acc, rec) => [...acc, {boroCD: rec.boroCD, date: rec.date,
               total: +(rec.total/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("Apr 01 2019")))[0].total).toFixed(2),
               mgp: +(rec.mgp/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("Apr 01 2019")))[0].mgp).toFixed(2),
@@ -364,8 +366,6 @@
               return i(t);
             };
           }
-
-
 
       }
 
