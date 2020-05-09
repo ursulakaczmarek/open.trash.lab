@@ -70,7 +70,7 @@
 
 <body>
   <h1>NYC's Coronavirus Trash Crash</h1>
-  <h2>DSNY's trash haul in April 2020 decreased an average of <span style="color: #cf7760; font-size: 1.2em;">77%</span> across NYC Community Districts from the same time the previous year</h2>
+  <h2>DSNY's trash haul in April 2020 decreased an average of <span style="color: #cf7760;">6.72%</span> across NYC Community Districts from the same time the previous year</h2>
   <div id="chart">
     <svg width="1300" height="700"></svg>
   </div>
@@ -233,7 +233,7 @@
         //monthly % change from 4/2019 values
         var cdData = data.filter(d => d.boroCD == cd);
         var changeValues = cdData.filter(
-          d => !d.date.includes("Apr 01 2019")).reduce (
+          d => !d.date.includes("Apr 01 2019") || !d.date.includes("May 01 2020") ).reduce (
             (acc, rec) => [...acc, {boroCD: rec.boroCD, date: rec.date,
               total: +(rec.total/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("Apr 01 2019")))[0].total).toFixed(2),
               mgp: +(rec.mgp/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("Apr 01 2019")))[0].mgp).toFixed(2),
