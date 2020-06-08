@@ -69,10 +69,13 @@
 </head>
 
 <body>
-  <h1>Manhattan's Coronavirus Trash Crash</h1>
-  <h2>DSNY's May 2020 trash haul outside Manhattan increased an average of <span style="color: #cf7760;font-size:1.2em">3.6%</span>
+  <h1>Manhattan's Coronavirus Trash Crash Continues</h1>
+  <h2>DSNY's trash haul in April 2020 decreased an average of <span style="color: #cf7760;font-size:1.2em">6.72%</span>
+    across NYC community districts from the same time last year, while Manhattan community
+    districts averaged a <span style="color:#5d537c;font-size:1.2em">20.82%</span> decrease.<br>
+    DSNY's May 2020 trash haul outside Manhattan increased an average of <span style="color: #cf7760;font-size:1.2em">3.6%</span>
     from the same time last year, while Manhattan community
-    districts averaged a <span style="color:#5d537c;font-size:1.2em">18.86%</span> decrease</h2>
+    districts averaged a <span style="color:#5d537c;font-size:1.2em">18.86%</span> decrease.</h2>
   <div id="chart">
     <svg width="1300" height="680"></svg>
   </div>
@@ -90,7 +93,7 @@
         row => new Date(row.month.split(" / ")[0] + "/" + row.month.split(" / ")[1] + "/01") > new Date("2019-04-30")).map(
         row => [{
           boroCD: row.borough_id.concat(row.communitydistrict),
-          date: new Date(row.month.split(" / ")[0] + "/" + row.month.split(" / ")[1] + "/01").toDateString().split(' ').slice(1).join(' '),
+          date: new Date(row.month.split(" / ")[0] + "/" + row.month.split(" / ")[1] + "/01").toDateString().split(' ').slice(1).join(" "),
           total: Object.entries(row).reduce(
             (totals, type) => {
               if (type[0].includes("tons"))
@@ -104,9 +107,9 @@
         }]).reduce(
         (a, b) => a.concat(b));
 
-      //April 2020 year over year values
+      //May 2020 year over year values
       var yoy = trashData.filter(
-        d => d.date.includes('May')).reduce(
+        d => d.date.includes("May")).reduce(
         (a, b) => {
           function diff(a, b) {
             return +Number(100 * ((a - b) / Math.abs(b))).toFixed(3);
@@ -174,11 +177,11 @@
 
       //draw choropleth
       gMap.selectAll(".cd")
-        .data(yoyMap, d => d[0])
+        .data(yoyMap, d => (d[0] ? d[0] : d.properties.boro_cd))
         .style("fill", d => colorTotal(d[1]))
         .on("mouseover", (d, i) => {
           tooltip.transition().duration(750).style("visibility", "visible")
-          tooltip.html("community district: " + d[0] + "<br/> " + "Apr 2019 tons: " + d[3] + "<br/> " + "Apr 2020 tons: " + d[2] + "<br/> " + "change: " + d[1] + "%")
+          tooltip.html("community district: " + d[0] + "<br/> " + "May 2019 tons: " + d[3] + "<br/> " + "May 2020 tons: " + d[2] + "<br/> " + "change: " + d[1] + "%")
           tooltip.style("top", (d3.event.pageY + 1) + "px")
           tooltip.style("left", (d3.event.pageX + 1) + "px")
         })
@@ -192,8 +195,8 @@
       gMap.append("text")
         .attr("class", "label")
         .attr("x", 855)
-        .attr("y", 95)
-        .text("% Change YoY April");
+        .attr("y", 105)
+        .text("% Change YoY May");
 
       var defs = gMap.append("defs");
 
@@ -213,35 +216,35 @@
         .attr("width", 170)
         .attr("height", 20)
         .attr("x", 845)
-        .attr("y", 100)
+        .attr("y", 110)
         .style("fill", "url(#linear-gradient)");
 
       gMap.append("text")
         .attr("class", "label")
         .attr("x", 780)
-        .attr("y", 115)
+        .attr("y", 125)
         .text(minChange + "%");
 
       gMap.append("text")
         .attr("class", "label")
         .attr("x", 1020)
-        .attr("y", 115)
+        .attr("y", 125)
         .text(maxChange + "%");
 
       //create initial line chart
       lines(trashData, "101", g, ["101","0,0"]);
 
       function lines(data, cd, g, legend) {
-        //monthly % change from 4/2019 values
+        //monthly % change from 5/2019 values
         var cdData = data.filter(d => d.boroCD == cd);
         var changeValues = cdData.filter(
-          d => !d.date.includes("Apr 01 2019") && !d.date.includes("May 01 2020") ).reduce (
+          d => !d.date.includes("May 01 2019") && !d.date.includes("June 01 2020") ).reduce (
             (acc, rec) => [...acc, {boroCD: rec.boroCD, date: rec.date,
-              total: +(rec.total/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("Apr 01 2019")))[0].total).toFixed(2),
-              mgp: +(rec.mgp/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("Apr 01 2019")))[0].mgp).toFixed(2),
-              paper: +(rec.paper/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("Apr 01 2019")))[0].paper).toFixed(2),
-              refuse: +(rec.refuse/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("Apr 01 2019")))[0].refuse).toFixed(2),
-              organics: +(rec.organics/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("Apr 01 2019")))[0].organics).toFixed(2)
+              total: +(rec.total/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("May 01 2019")))[0].total).toFixed(2),
+              mgp: +(rec.mgp/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("May 01 2019")))[0].mgp).toFixed(2),
+              paper: +(rec.paper/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("May 01 2019")))[0].paper).toFixed(2),
+              refuse: +(rec.refuse/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("May 01 2019")))[0].refuse).toFixed(2),
+              organics: +(rec.organics/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("May 01 2019")))[0].organics).toFixed(2)
             }], []);
 
         // draw line chart from LTR
@@ -285,7 +288,7 @@
           .data([legend])
           .attr("class", "label")
           .attr("x", 40).attr("y", 45)
-          .text(d => "monthly % change from April 2019 tonnage by type, community district " + d[0]);
+          .text(d => "monthly % change from May 2019 tonnage by type, community district " + d[0]);
 
           g.append("text")
           .attr("class", "label")
