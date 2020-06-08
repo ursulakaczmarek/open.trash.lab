@@ -70,9 +70,9 @@
 
 <body>
   <h1>Manhattan's Coronavirus Trash Crash</h1>
-  <h2>DSNY's April 2020 trash haul outside Manhattan decreased an average of <span style="color: #cf7760;font-size:1.2em">3.12%</span>
+  <h2>DSNY's May 2020 trash haul outside Manhattan increased an average of <span style="color: #cf7760;font-size:1.2em">3.6%</span>
     from the same time last year, while Manhattan community
-    districts averaged a <span style="color:#5d537c;font-size:1.2em">20.82%</span> decrease</h2>
+    districts averaged a <span style="color:#5d537c;font-size:1.2em">18.86%</span> decrease</h2>
   <div id="chart">
     <svg width="1300" height="680"></svg>
   </div>
@@ -87,7 +87,7 @@
       var tonnage = bothSets[1];
 
       var trashData = tonnage.filter(
-        row => new Date(row.month.split(" / ")[0] + "/" + row.month.split(" / ")[1] + "/01") > new Date("2019-03-30")).map(
+        row => new Date(row.month.split(" / ")[0] + "/" + row.month.split(" / ")[1] + "/01") > new Date("2019-04-30")).map(
         row => [{
           boroCD: row.borough_id.concat(row.communitydistrict),
           date: new Date(row.month.split(" / ")[0] + "/" + row.month.split(" / ")[1] + "/01").toDateString().split(' ').slice(1).join(' '),
@@ -106,7 +106,7 @@
 
       //April 2020 year over year values
       var yoy = trashData.filter(
-        d => d.date.includes('Apr')).reduce(
+        d => d.date.includes('May')).reduce(
         (a, b) => {
           function diff(a, b) {
             return +Number(100 * ((a - b) / Math.abs(b))).toFixed(3);
@@ -174,7 +174,7 @@
 
       //draw choropleth
       gMap.selectAll(".cd")
-        .data(yoyMap, d => (d[0] ? d[0] : d.properties.boro_cd))
+        .data(yoyMap, d => d[0])
         .style("fill", d => colorTotal(d[1]))
         .on("mouseover", (d, i) => {
           tooltip.transition().duration(750).style("visibility", "visible")
