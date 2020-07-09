@@ -70,18 +70,20 @@
 
 <body>
   <h1>Manhattan's Coronavirus Trash Crash Continues</h1>
-  <h2>DSNY's trash haul in April 2020 decreased an average of <span style="color: #5d537c;font-size:1.2em">6.72%</span>
-    across NYC community districts from the same time last year, while Manhattan community
-    districts averaged a <span style="color:#5d537c;font-size:1.2em">20.82%</span> decrease.<br>
-    DSNY's May 2020 trash haul outside Manhattan increased an average of <span style="color: #cf7760;font-size:1.2em">3.6%</span>
+  <h2>DSNY's May 2020 trash haul outside Manhattan increased an average of <span style="color: #cf7760;font-size:1.2em">3.6%</span>
     from the same time last year, while Manhattan community
-    districts averaged a <span style="color:#5d537c;font-size:1.2em">18.86%</span> decrease.</h2>
+    districts averaged a <span style="color:#5d537c;font-size:1.2em">18.86%</span> decrease.<br>
+    DSNY's June 2020 trash haul outside Manhattan increased an average of <span style="color: #cf7760;font-size:1.2em">15.22%</span>
+    from the same time last year, while Manhattan community
+    districts averaged a <span style="color:#5d537c;font-size:1.2em">6.55%</span> decrease.<br><br>
+    <a href="https://bl.ocks.org/ursulakaczmarek/raw/e1faf8b159fc71b50fff50361700b277/"style="color:#5d537c;text-decoration:none">View year over year changes for all lockdown months here</a>
+  </h2>
   <div id="chart">
     <svg width="1300" height="680"></svg>
   </div>
   <script>
-  var cd_url = 'https://raw.githubusercontent.com/ursulakaczmarek/open.trash.lab/master/dsny.tonnage/nyccd.geojson';
-  var trash_url = 'https://data.cityofnewyork.us/resource/ebb7-mvp5.json';
+  var cd_url = "https://raw.githubusercontent.com/ursulakaczmarek/open.trash.lab/master/dsny.tonnage/nyccd.geojson";
+  var trash_url = "https://data.cityofnewyork.us/resource/ebb7-mvp5.json?$where=month between '2019 / 06' and '2020 / 06'";
 
   Promise.all([d3.json(cd_url), d3.json(trash_url)])
     .then(function(bothSets) {
@@ -89,11 +91,10 @@
 
       var tonnage = bothSets[1];
 
-      var trashData = tonnage.filter(
-        row => new Date(row.month.split(" / ")[0] + "/" + row.month.split(" / ")[1] + "/01") > new Date("2019-04-30")).map(
+      var trashData = tonnage.map(
         row => [{
           boroCD: row.borough_id.concat(row.communitydistrict),
-          date: new Date(row.month.split(" / ")[0] + "/" + row.month.split(" / ")[1] + "/01").toDateString().split(' ').slice(1).join(" "),
+          date: new Date(row.month.split(" / ")[0] + "/" + row.month.split(" / ")[1] + "/01").toDateString().split(" ").slice(1).join(" "),
           total: Object.entries(row).reduce(
             (totals, type) => {
               if (type[0].includes("tons"))
@@ -107,30 +108,37 @@
         }]).reduce(
         (a, b) => a.concat(b));
 
-      //May 2020 year over year values
+      //June 2020 year over year values
       var yoy = trashData.filter(
-        d => d.date.includes("May")).reduce(
+        d => d.date.includes("Jun")).reduce(
         (a, b) => {
           function diff(a, b) {
             return +Number(100 * ((a - b) / Math.abs(b))).toFixed(3);
           }
           var idx = a.findIndex(elem => elem.boroCD == b.boroCD);
           if (~idx) {
-            a[idx].totalDiff = diff(a[idx].total, b.total);
-            a[idx].prevTotal = b.total
+            a[idx].totalDiff = diff(b.total, a[idx].total);
+            a[idx].total2019 = a[idx].total;
+            a[idx].total2020 = b.total
           } else {
             a.push(JSON.parse(JSON.stringify(b)));
           }
           return a
         }, []);
+        var mnmap = yoy.filter(d => d.boroCD.indexOf("1") === 0).map(d => d.totalDiff);
+        var othmap = yoy.filter(d => !d.boroCD.startsWith("1")).map(d => d.totalDiff);
+        const average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
 
-      var yoyMap = yoy.map(d => [d.boroCD, d.totalDiff, d.total, d.prevTotal]);
+        var mhav = average(mnmap), ohav = average(othmap);
+        console.log([mhav, ohav]);
+
+      var yoyMap = yoy.map(d => [d.boroCD, d.totalDiff, d.total2019, d.total2020]);
 
       //top-level svg
       var svg = d3.select("svg");
 
       //line chart svg
-      var margin = { top: 70, right: 40, bottom: 30, left: 70},
+      var margin = { top: 80, right: 40, bottom: 30, left: 70},
         width = 750 - margin.left - margin.right,
         height = 450 - margin.top - margin.bottom;
 
@@ -181,7 +189,7 @@
         .style("fill", d => colorTotal(d[1]))
         .on("mouseover", (d, i) => {
           tooltip.transition().duration(750).style("visibility", "visible")
-          tooltip.html("community district: " + d[0] + "<br/> " + "May 2019 tons: " + d[3] + "<br/> " + "May 2020 tons: " + d[2] + "<br/> " + "change: " + d[1] + "%")
+          tooltip.html("community district: " + d[0] + "<br/> " + "June 2019 tons: " + d[2] + "<br/> " + "June 2020 tons: " + d[3] + "<br/> " + "change: " + d[1] + "%")
           tooltip.style("top", (d3.event.pageY + 1) + "px")
           tooltip.style("left", (d3.event.pageX + 1) + "px")
         })
@@ -196,7 +204,7 @@
         .attr("class", "label")
         .attr("x", 855)
         .attr("y", 105)
-        .text("% Change YoY May");
+        .text("% Change YoY June");
 
       var defs = gMap.append("defs");
 
@@ -235,19 +243,18 @@
       lines(trashData, "101", g, ["101","0,0"]);
 
       function lines(data, cd, g, legend) {
-        //monthly % change from 5/2019 values
+        //monthly % change from 2019 values
         var cdData = data.filter(d => d.boroCD == cd);
-        var changeValues = cdData.filter(
-          d => !d.date.includes("May 01 2019") && !d.date.includes("June 01 2020") ).reduce (
+        var changeValues = cdData.reduce (
             (acc, rec) => [...acc, {boroCD: rec.boroCD, date: rec.date,
-              total: +(rec.total/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("May 01 2019")))[0].total).toFixed(2),
-              mgp: +(rec.mgp/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("May 01 2019")))[0].mgp).toFixed(2),
-              paper: +(rec.paper/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("May 01 2019")))[0].paper).toFixed(2),
-              refuse: +(rec.refuse/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("May 01 2019")))[0].refuse).toFixed(2),
-              organics: +(rec.organics/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("May 01 2019")))[0].organics).toFixed(2)
+              total: +(rec.total/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("Jun 01 2019")))[0].total).toFixed(2),
+              mgp: +(rec.mgp/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("Jun 01 2019")))[0].mgp).toFixed(2),
+              paper: +(rec.paper/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("Jun 01 2019")))[0].paper).toFixed(2),
+              refuse: +(rec.refuse/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("Jun 01 2019")))[0].refuse).toFixed(2),
+              organics: +(rec.organics/data.filter(it => (it.boroCD === rec.boroCD && it.date.includes("Jun 01 2019")))[0].organics).toFixed(2)
             }], []);
 
-        // draw line chart from LTR
+        //draw line chart from LTR
         var drawData = changeValues.sort(
           (a, b) => new Date(a.date) - new Date(b.date));
 
@@ -287,8 +294,8 @@
         g.append("text")
           .data([legend])
           .attr("class", "label")
-          .attr("x", 40).attr("y", 45)
-          .text(d => "monthly % change from May 2019 tonnage by type, community district " + d[0]);
+          .attr("x", 40).attr("y", 70)
+          .text(d => "monthly % change from June 2019 tonnage by type, community district " + d[0]);
 
           g.append("text")
           .attr("class", "label")
@@ -301,7 +308,7 @@
             .enter()
             .append("circle")
             .attr("cx", 20)
-            .attr("cy",(d,i) => 240 + i*20)
+            .attr("cy",(d,i) => 230 + i*20)
             .attr("r", 5)
             .style("fill", d => colorTypes(d));
 
@@ -310,7 +317,7 @@
             .enter()
             .append("text")
             .attr("x", 30)
-            .attr("y",(d,i) => 245 + i*20)
+            .attr("y",(d,i) => 235 + i*20)
             .text(d => d)
             .attr("text-anchor", "left")
             .style("fill", d => colorTypes(d));
@@ -324,6 +331,7 @@
           .call(d3.axisBottom(x));
 
         g.selectAll(".tick line").remove();
+
         //add the y axis
         g.append("g")
           .attr("class", "label")
@@ -340,7 +348,7 @@
             return x => x === 1 ? "0%" : f(x - 1);
           }
 
-          // allow updating the lines
+          //allow for update
          g.selectAll(".proj").remove();
 
           var proj = g.selectAll(".proj")
